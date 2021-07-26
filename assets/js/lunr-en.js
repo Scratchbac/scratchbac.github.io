@@ -1,7 +1,3 @@
----
-layout: null
----
-
 var idx = lunr(function () {
   this.field('title', {boost: 10})
   this.field('excerpt')
@@ -10,48 +6,140 @@ var idx = lunr(function () {
   this.ref('id')
 });
 
-{% assign count = 0 %}
-{% for c in site.collections %}
-  {% assign docs = c.docs | where_exp:'doc','doc.search != false' %}
-  {% for doc in docs %}
+
+
+  
+  
     idx.add({
-      title: {{ doc.title | jsonify }},
-      excerpt: {{ doc.content | strip_html | truncatewords: 20 | jsonify }},
-      categories: {{ doc.categories | jsonify }},
-      tags: {{ doc.tags | jsonify }},
-      id: {{ count }}
+      title: "Sirens in the Cosmic Fugue",
+      excerpt: "Create vessels and sails adjusted to the heavenly ether, and there will be plenty of people unafraid of the empty...",
+      categories: ["Cosmos"],
+      tags: ["exploration","NASA","Soviet","spacex","universe","humanity"],
+      id: 0
     });
-    {% assign count = count | plus: 1 %}
-  {% endfor %}
-{% endfor %}
+    
+  
+    idx.add({
+      title: "All Watched Over By Machines Of Loving Grace",
+      excerpt: "The most merciful thing in the world, I think, is the inability of the human mind to correlate all its...",
+      categories: ["Sapiens"],
+      tags: ["techne"],
+      id: 1
+    });
+    
+  
+    idx.add({
+      title: "The Hacker Known as 4chan",
+      excerpt: "Once, Zhuang Zhou dreamed he was a butterfly, a butterfly flitting and fluttering about, happy with himself and doing as...",
+      categories: ["Sapiens"],
+      tags: ["techne","ethnography"],
+      id: 2
+    });
+    
+  
+    idx.add({
+      title: "Too soon to say",
+      excerpt: "Let A Hundred Flowers Bloom; Let A Hundred Schools Of Thought Contend — Mao Zedong, Hundred Flowers Movement In the...",
+      categories: ["Sapiens"],
+      tags: ["thoughts","sapiens"],
+      id: 3
+    });
+    
+  
+    idx.add({
+      title: "Ocean",
+      excerpt: "Now I a fourfold vision see And a fourfold vision is given to me:Tis fourfold in my supreme delight,And threefold...",
+      categories: ["Sapiens"],
+      tags: ["humanity"],
+      id: 4
+    });
+    
+  
+    idx.add({
+      title: "Natura Naturans",
+      excerpt: "On the mountain they felled my trunk All my schemes come to ‘naught Without shame a troubador am I I...",
+      categories: ["Sapiens"],
+      tags: ["nature","techne"],
+      id: 5
+    });
+    
+  
+
 
 console.log( jQuery.type(idx) );
 
 var store = [
-  {% for c in site.collections %}
-    {% if forloop.last %}
-      {% assign l = true %}
-    {% endif %}
-    {% assign docs = c.docs | where_exp:'doc','doc.search != false' %}
-    {% for doc in docs %}
-      {% if doc.header.teaser %}
-        {% capture teaser %}{{ doc.header.teaser }}{% endcapture %}
-      {% else %}
-        {% assign teaser = site.teaser %}
-      {% endif %}
+  
+    
+    
+    
+      
       {
-        "title": {{ doc.title | jsonify }},
-        "url": {{ doc.url | absolute_url | jsonify }},
-        "excerpt": {{ doc.content | strip_html | truncatewords: 20 | jsonify }},
+        "title": "Sirens in the Cosmic Fugue",
+        "url": "https://kosmonautx.github.io/cosmos/sirens-in-the-cosmic-fugue/",
+        "excerpt": "Create vessels and sails adjusted to the heavenly ether, and there will be plenty of people unafraid of the empty...",
         "teaser":
-          {% if teaser contains "://" %}
-            {{ teaser | jsonify }}
-          {% else %}
-            {{ teaser | absolute_url | jsonify }}
-          {% endif %}
-      }{% unless forloop.last and l %},{% endunless %}
-    {% endfor %}
-  {% endfor %}]
+          
+            "https://kosmonautx.github.io/assets/images/earthrise.jpg"
+          
+      },
+    
+      
+      {
+        "title": "All Watched Over By Machines Of Loving Grace",
+        "url": "https://kosmonautx.github.io/sapiens/all-watched-over-by-machines-of-loving-grace/",
+        "excerpt": "The most merciful thing in the world, I think, is the inability of the human mind to correlate all its...",
+        "teaser":
+          
+            "https://kosmonautx.github.io/assets/images/hal_9000.jpg"
+          
+      },
+    
+      
+      {
+        "title": "The Hacker Known as 4chan",
+        "url": "https://kosmonautx.github.io/sapiens/the-hacker-known-as-4chan/",
+        "excerpt": "Once, Zhuang Zhou dreamed he was a butterfly, a butterfly flitting and fluttering about, happy with himself and doing as...",
+        "teaser":
+          
+            "https://kosmonautx.github.io/assets/images/4chan.jpg"
+          
+      },
+    
+      
+      {
+        "title": "Too soon to say",
+        "url": "https://kosmonautx.github.io/sapiens/confucius-says/",
+        "excerpt": "Let A Hundred Flowers Bloom; Let A Hundred Schools Of Thought Contend — Mao Zedong, Hundred Flowers Movement In the...",
+        "teaser":
+          
+            "https://kosmonautx.github.io/assets/images/tiananmen_square.jpg"
+          
+      },
+    
+      
+      {
+        "title": "Ocean",
+        "url": "https://kosmonautx.github.io/sapiens/ocean/",
+        "excerpt": "Now I a fourfold vision see And a fourfold vision is given to me:Tis fourfold in my supreme delight,And threefold...",
+        "teaser":
+          
+            "https://kosmonautx.github.io/assets/images/ocean.jpg"
+          
+      },
+    
+      
+      {
+        "title": "Natura Naturans",
+        "url": "https://kosmonautx.github.io/sapiens/natura-naturans/",
+        "excerpt": "On the mountain they felled my trunk All my schemes come to ‘naught Without shame a troubador am I I...",
+        "teaser":
+          
+            "https://kosmonautx.github.io/assets/images/arboreal-office.jpg"
+          
+      }
+    
+  ]
 
 $(document).ready(function() {
   $('input#search').on('keyup', function () {
@@ -59,7 +147,7 @@ $(document).ready(function() {
     var query = $(this).val();
     var result = idx.search(query);
     resultdiv.empty();
-    resultdiv.prepend('<p class="results__found">'+result.length+' {{ site.data.ui-text[site.locale].results_found | default: "Result(s) found" }}</p>');
+    resultdiv.prepend('<p class="results__found">'+result.length+' Result(s) found</p>');
     for (var item in result) {
       var ref = result[item].ref;
       if(store[ref].teaser){
